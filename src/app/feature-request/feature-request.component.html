@@ -1,0 +1,24 @@
+<div *ngIf="featureRequest | async; let featureRequest; else featureRequestNotLoaded">
+  <rafr-feature-request-header [featureRequest]="featureRequest">
+    (reemitFeatureRequest)="resetFeatureRequest()">
+  </rafr-feature-request-header>
+
+  <div class="card" id="thread-section" *ngIf="threads | async; let threads; else threadsNotLoaded">
+    <div class="card-header">
+      <h4>Discussion Threads</h4>
+    </div>
+    <div class="card-block" *ngFor="let thread of threads">
+      <h4 class="card-title">{{thread.name}}</h4>
+      <a class="card-link" [routerLink]="['/threads', thread.id]">See more</a>
+    </div>
+  </div>
+
+  <!--move loader to separate component-->
+  <ng-template #threadsNotLoaded>
+    <rafr-loading [loadingText]="'Loading discussion threads'"></rafr-loading>
+  </ng-template>
+</div>
+
+<ng-template #featureRequestNotLoaded>
+  <rafr-loading [loadingText]="'Loading feature request'"></rafr-loading>
+</ng-template>

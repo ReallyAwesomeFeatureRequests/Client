@@ -1,0 +1,29 @@
+language: node_js
+node_js:
+  - "node"
+env:
+  - RAFR_DB_HOST=localhost RAFR_DB_NAME=rafr NODE_ENV=development RAFR_DB_USERNAME=root RAFR_DB_PASSWORD=
+services:
+  - mysql
+install:
+  - cd ./api/
+  - npm install
+  - cd ../admin/
+  - npm install
+  - cd ../feature/
+  - npm install
+  - cd ../
+before_script:
+  - cd ./api/
+  - mysql -u root < ./models/schema.sql
+  - mysql -u root < ./models/seed.sql
+  - cd ../
+script:
+  - cd ./api/
+  - npm run generate-models
+  - npm test
+  - cd ../admin
+  - npm run build
+  - cd ../feature
+  - npm run build
+  - cd ../
